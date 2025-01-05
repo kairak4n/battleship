@@ -29,6 +29,7 @@ export class Gameboard {
             Array.from({ length: BOARD_SIZE }, () => Array(BOARD_SIZE));
         this.ships = []
         this.totalHits = 0
+        this.shotRecords = [];
     }
 
     placeShip(coord, direction, type) {
@@ -53,6 +54,16 @@ export class Gameboard {
                 this.tiles[coord[0]][coord[1] + i] = ship;
             }
         }
+        return ship
+    }
 
+    receiveAttack(coord) {
+        this.shotRecords.push(coord);
+        if (this.tiles[coord[0]][coord[1]] !== undefined) {
+            this.tiles[coord[0]][coord[1]].hit()
+            return true;
+        }
+        return false;
+        
     }
 }
