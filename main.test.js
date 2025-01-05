@@ -15,6 +15,7 @@ describe("Ship", () => {
     test("Ship gets hit once", () => {
         ship.hit()
         expect(ship.hitTimes).toBe(1)
+        expect(ship.isSunk()).toStrictEqual(false)
     })
 
     test("Ship is sunk when it gets hit as many times as its length", () => {
@@ -27,9 +28,10 @@ describe("Ship", () => {
 
 describe("Gameboard", () => {
     let gameboard;
+    let ship;
     beforeEach(() => {
         gameboard = new Gameboard();
-        gameboard.placeShip([5, 5], 0, 4)
+        ship = gameboard.placeShip([5, 5], 0, 4)
     })
 
     describe("placing ships", () => {
@@ -44,6 +46,20 @@ describe("Gameboard", () => {
         })
         test("unsuccessful - invalid direction", () => {
             expect(() => gameboard.placeShip([5, 7], 2, 0)).toThrow(Error);
+        })
+    })
+
+    describe("receiving attacks", () => {
+        test("successful - shot missed", () => {
+            expect(gameboard.receiveAttack([0,0])).toStrictEqual(false);
+        })
+        test("successful - shot hit", () => {
+            expect(gameboard.receiveAttack([6,5])).toStrictEqual(true);
+        })
+        test("succesful - after getting hit as many times as its length, ship is sunk", () => {
+            gameboard.receiveAttack([5,5])
+            gameboard.receiveAttack([6,5])
+            expect(ship.isSunk()).toStrictEqual(true);
         })
     })
 
