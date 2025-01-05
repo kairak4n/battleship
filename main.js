@@ -58,11 +58,12 @@ export class Gameboard {
     }
 
     receiveAttack(coord) {
-        this.shotRecords.push(coord);
         if (this.tiles[coord[0]][coord[1]] !== undefined) {
             this.tiles[coord[0]][coord[1]].hit()
+            this.shotRecords.push([coord, true]);
             return true;
         }
+        this.shotRecords.push([coord, false]);
         return false;
     }
 
