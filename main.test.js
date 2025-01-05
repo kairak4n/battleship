@@ -28,10 +28,10 @@ describe("Ship", () => {
 
 describe("Gameboard", () => {
     let gameboard;
-    let ship;
+    let ship1;
     beforeEach(() => {
         gameboard = new Gameboard();
-        ship = gameboard.placeShip([5, 5], 0, 4)
+        ship1 = gameboard.placeShip([5, 5], 0, 4)
     })
 
     describe("placing ships", () => {
@@ -59,8 +59,25 @@ describe("Gameboard", () => {
         test("succesful - after getting hit as many times as its length, ship is sunk", () => {
             gameboard.receiveAttack([5,5])
             gameboard.receiveAttack([6,5])
-            expect(ship.isSunk()).toStrictEqual(true);
+            expect(ship1.isSunk()).toStrictEqual(true);
         })
     })
 
+    describe("reporting if all ships have sunk", () => {
+        beforeEach(() => {
+            gameboard.placeShip([5, 6], 0, 3);
+        })
+        test("successful - not all ships are sunk", () => {
+            gameboard.receiveAttack([5,5]) 
+            expect(gameboard.isAllSunk()).toStrictEqual(false);
+        })
+        test("successful - all ships are sunk", () => {
+            gameboard.receiveAttack([5,5]) 
+            gameboard.receiveAttack([6,5]) 
+            gameboard.receiveAttack([5,6]) 
+            gameboard.receiveAttack([6,6]) 
+            gameboard.receiveAttack([7,6]) 
+            expect(gameboard.isAllSunk()).toStrictEqual(true);
+        })
+    })
 })
