@@ -25,3 +25,26 @@ describe("Ship", () => {
     })
 })
 
+describe("Gameboard", () => {
+    let gameboard;
+    beforeEach(() => {
+        gameboard = new Gameboard();
+        gameboard.placeShip([5, 5], 0, 4)
+    })
+
+    describe("placing ships", () => {
+        test("unsuccessful - trying to place a ship on an occupied square", () => {
+            expect(() => gameboard.placeShip([6, 4], 1, 0)).toThrow(Error)
+        })
+        test("unsuccessful - trying to place a ship on an invalid coordinate", () => {
+            expect(() => gameboard.placeShip([8, 4], 0, 0)).toThrow(Error)
+        })
+        test("unsuccessful - trying to place a ship more than its allowed", () => {
+            expect(() => gameboard.placeShip([5, 7], 0, 4)).toThrow(Error);
+        })
+        test("unsuccessful - invalid direction", () => {
+            expect(() => gameboard.placeShip([5, 7], 2, 0)).toThrow(Error);
+        })
+    })
+
+})
